@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Earth Life</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+            background-color: #f0f0f0;
+            padding: 50px;
+        }
+        h1 {
+            color: #333;
+        }
+        #searchBox {
+            padding: 10px;
+            font-size: 18px;
+            width: 300px;
+            margin-top: 20px;
+        }
+        .hidden {
+            display: none;
+        }
+        #adminIcon {
+            position: fixed;
+            top: 10px;
+            right: 10px;
+            width: 50px;
+            height: 50px;
+            background-color: red;
+            border-radius: 50%;
+            color: white;
+            font-size: 24px;
+            display: none;
+            justify-content: center;
+            align-items: center;
+        }
+    </style>
+</head>
+<body>
+
+    <h1>Earth Life</h1>
+    <input type="text" id="searchBox" placeholder="Şifreyi girin ve Enter'a basın">
+
+    <!-- Admin ikonu -->
+    <div id="adminIcon" class="hidden">
+        <p>⭐5</p>
+    </div>
+
+    <script>
+        document.getElementById("searchBox").addEventListener("keypress", function(event) {
+            if (event.key === "Enter") {
+                var input = document.getElementById("searchBox").value;
+
+                // Yönetici şifresi
+                if (input === "p278935") {
+                    document.getElementById("adminIcon").style.display = "flex"; // Yönetici modu açılıyor
+                    alert("Yönetici moduna giriş yapıldı.");
+                    document.body.innerHTML += '<div style="color: red;">5201 Error: Lütfen sayfayı yeniden yükleyiniz.</div>'; // Hata mesajı
+                }
+
+                // Yönetici modundan çıkış
+                else if (input === "ah278935") {
+                    document.getElementById("adminIcon").style.display = "none"; // Yönetici modu kapatılıyor
+                    alert("Yönetici modundan çıkıldı.");
+                }
+
+                // Chat sayfasına yönlendirme
+                else if (input === "chat5") {
+                    window.location.href = "chat.html"; // Chat sayfasına yönlendirme
+                }
+
+                // RedNotes sayfasına yönlendirme
+                else if (input === "RedNotes") {
+                    window.location.href = "rednotes.html"; // RedNotes sayfasına yönlendirme
+                }
+
+                // Ahbcodes5 sayfasına yönlendirme
+                else if (input === "ahbcodes5") {
+                    window.location.href = "files.html"; // Ahbcodes5 sayfasına yönlendirme
+                }
+
+                // Yanlış şifre uyarısı
+                else {
+                    alert("Yanlış şifre, lütfen tekrar deneyin.");
+                }
+            }
+        });
+    </script>
+
+</body>
+</html>
