@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Red Notes</title>
+</head>
+<body>
+    <h1>Red Notes</h1>
+    <h2>Günlük</h2>
+    <textarea id="diary" rows="4" cols="50" placeholder="Günlüğünüzü yazın..."></textarea>
+    <button id="saveDiary">Kaydet</button>
+    
+    <h2>Not Defteri</h2>
+    <textarea id="notes" rows="4" cols="50" placeholder="Notlarınızı yazın..."></textarea>
+    <button id="saveNotes">Kaydet</button>
+
+    <script>
+        document.getElementById("saveDiary").addEventListener("click", function() {
+            let diaryContent = document.getElementById("diary").value;
+            // Burada günlük içeriğini kaydetme işlemi yapılacak
+            alert("Günlük kaydedildi.");
+        });
+
+        document.getElementById("saveNotes").addEventListener("click", function() {
+            let notesContent = document.getElementById("notes").value;
+            // Burada not defteri içeriğini kaydetme işlemi yapılacak
+            alert("Notlar kaydedildi.");
+        });
+    </script>
+</body>
+</html>
