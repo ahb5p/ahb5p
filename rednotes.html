@@ -3,30 +3,56 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Red Notes</title>
+    <title>RedNotes</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+            background-color: #f0f0f0;
+            padding: 50px;
+        }
+        #diaryContent, #notebookContent {
+            display: none;
+        }
+    </style>
 </head>
 <body>
-    <h1>Red Notes</h1>
-    <h2>Günlük</h2>
-    <textarea id="diary" rows="4" cols="50" placeholder="Günlüğünüzü yazın..."></textarea>
-    <button id="saveDiary">Kaydet</button>
+
+    <h1>RedNotes</h1>
+    <button id="diaryButton">Günlük</button>
+    <button id="notebookButton">Not Defteri</button>
     
-    <h2>Not Defteri</h2>
-    <textarea id="notes" rows="4" cols="50" placeholder="Notlarınızı yazın..."></textarea>
-    <button id="saveNotes">Kaydet</button>
+    <div id="diaryContent">
+        <h2>Günlük</h2>
+        <textarea placeholder="Günlüğünüzü yazın..."></textarea>
+        <button id="saveDiary">Kaydet</button>
+    </div>
+    
+    <div id="notebookContent">
+        <h2>Not Defteri</h2>
+        <textarea placeholder="Not defterinizi yazın..."></textarea>
+        <button id="saveNotebook">Kaydet</button>
+    </div>
 
     <script>
+        document.getElementById("diaryButton").addEventListener("click", function() {
+            document.getElementById("diaryContent").style.display = "block";
+            document.getElementById("notebookContent").style.display = "none";
+        });
+
+        document.getElementById("notebookButton").addEventListener("click", function() {
+            document.getElementById("notebookContent").style.display = "block";
+            document.getElementById("diaryContent").style.display = "none";
+        });
+
         document.getElementById("saveDiary").addEventListener("click", function() {
-            let diaryContent = document.getElementById("diary").value;
-            // Burada günlük içeriğini kaydetme işlemi yapılacak
             alert("Günlük kaydedildi.");
         });
 
-        document.getElementById("saveNotes").addEventListener("click", function() {
-            let notesContent = document.getElementById("notes").value;
-            // Burada not defteri içeriğini kaydetme işlemi yapılacak
-            alert("Notlar kaydedildi.");
+        document.getElementById("saveNotebook").addEventListener("click", function() {
+            alert("Not defteri kaydedildi.");
         });
     </script>
+
 </body>
 </html>
