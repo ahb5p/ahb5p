@@ -37,6 +37,13 @@
             justify-content: center;
             align-items: center;
         }
+        #chatSection, #redNotesSection, #filesSection {
+            display: none;
+            margin-top: 20px;
+            background-color: #fff;
+            padding: 20px;
+            border: 1px solid #ccc;
+        }
     </style>
 </head>
 <body>
@@ -49,8 +56,35 @@
         <p>⭐5</p>
     </div>
 
+    <div id="chatSection" class="hidden">
+        <h2>Another Life</h2>
+        <input type="text" id="nickname" placeholder="Takma adınızı girin">
+        <div id="chatArea"></div>
+        <input type="text" id="chatInput" placeholder="Mesajınızı yazın">
+        <button onclick="sendMessage()">Gönder</button>
+        <h3>Geçmiş Mesajlar:</h3>
+        <div id="historyArea"></div>
+    </div>
+
+    <div id="redNotesSection" class="hidden">
+        <h2>RedNotes</h2>
+        <textarea id="notesInput" placeholder="Notlarınızı yazın" rows="5"></textarea>
+        <button onclick="saveNote()">Kaydet</button>
+        <div id="notesArea"></div>
+    </div>
+
+    <div id="filesSection" class="hidden">
+        <h2>Files</h2>
+        <ul>
+            <li><a href="https://sites.google.com/view/ahb-bag/ana-sayfa" target="_blank">Ana Sayfa</a></li>
+            <li><a href="https://share.goodnotes.com/s/nctrZrmwiz5vlzDXzXKQIR" target="_blank">GoodNotes Linki</a></li>
+        </ul>
+    </div>
+
     <script>
-        var isAdmin = false;
+        let messages = [];
+        let notes = [];
+        const historyArea = document.getElementById("historyArea");
 
         document.getElementById("searchBox").addEventListener("keypress", function(event) {
             if (event.key === "Enter") {
@@ -58,44 +92,36 @@
 
                 // Yönetici şifresi
                 if (input === "p278935") {
-                    isAdmin = true; // Yönetici modunu aç
-                    document.getElementById("adminIcon").style.display = "flex"; 
+                    document.getElementById("adminIcon").style.display = "flex"; // Yönetici modu açılıyor
                     alert("Yönetici moduna giriş yapıldı.");
-                    document.body.innerHTML += '<div style="color: red;">5201 Error: Lütfen sayfayı yeniden yükleyiniz.</div>'; 
+                    document.getElementById("chatSection").style.display = "block"; // Chat bölümü açılıyor
+                    document.getElementById("redNotesSection").style.display = "block"; // RedNotes bölümü açılıyor
+                    document.getElementById("filesSection").style.display = "block"; // Files bölümü açılıyor
+                    document.body.innerHTML += '<div style="color: red;">5201 Error: Lütfen sayfayı yeniden yükleyiniz.</div>'; // Hata mesajı
                 }
 
                 // Yönetici modundan çıkış
                 else if (input === "ah278935") {
-                    isAdmin = false; 
-                    document.getElementById("adminIcon").style.display = "none"; 
+                    document.getElementById("adminIcon").style.display = "none"; // Yönetici modu kapatılıyor
                     alert("Yönetici modundan çıkıldı.");
+                    document.getElementById("chatSection").style.display = "none"; // Chat bölümü kapanıyor
+                    document.getElementById("redNotesSection").style.display = "none"; // RedNotes bölümü kapanıyor
+                    document.getElementById("filesSection").style.display = "none"; // Files bölümü kapanıyor
                 }
 
                 // Chat sayfasına yönlendirme
                 else if (input === "chat5") {
-                    if (isAdmin) {
-                        window.location.href = "chat.html"; 
-                    } else {
-                        alert("Bu sayfaya erişim izniniz yok.");
-                    }
+                    document.getElementById("chatSection").style.display = "block"; // Chat bölümü açılıyor
                 }
 
                 // RedNotes sayfasına yönlendirme
                 else if (input === "RedNotes") {
-                    if (isAdmin) {
-                        window.location.href = "rednotes.html"; 
-                    } else {
-                        alert("Bu sayfaya erişim izniniz yok.");
-                    }
+                    document.getElementById("redNotesSection").style.display = "block"; // RedNotes bölümü açılıyor
                 }
 
                 // Ahbcodes5 sayfasına yönlendirme
                 else if (input === "ahbcodes5") {
-                    if (isAdmin) {
-                        window.location.href = "files.html"; 
-                    } else {
-                        alert("Bu sayfaya erişim izniniz yok.");
-                    }
+                    document.getElementById("filesSection").style.display = "block"; // Files bölümü açılıyor
                 }
 
                 // Yanlış şifre uyarısı
@@ -104,6 +130,29 @@
                 }
             }
         });
+
+        function sendMessage() {
+            const nickname = document.getElementById("nickname").value;
+            const chatInput = document.getElementById("chatInput").value;
+            const message = nickname + ": " + chatInput;
+
+            messages.push(message);
+            document.getElementById("chatArea").innerHTML += "<p>" + message + "</p>";
+            document.getElementById("chatInput").value = "";
+
+            // Mesaj geçmişini güncelle
+            historyArea.innerHTML = "";
+            messages.forEach(msg => {
+                historyArea.innerHTML += "<p>" + msg + "</p>";
+            });
+        }
+
+        function saveNote() {
+            const notesInput = document.getElementById("notesInput").value;
+            notes.push(notesInput);
+            document.getElementById("notesArea").innerHTML += "<p>" + notesInput + "</p>";
+            document.getElementById("notesInput").value = "";
+        }
     </script>
 
 </body>
