@@ -37,13 +37,6 @@
             justify-content: center;
             align-items: center;
         }
-        #messagesContainer, #redNotesContainer, #filesContainer {
-            display: none;
-            margin-top: 20px;
-            border: 1px solid #ccc;
-            padding: 20px;
-            background-color: #fff;
-        }
     </style>
 </head>
 <body>
@@ -56,31 +49,8 @@
         <p>⭐5</p>
     </div>
 
-    <div id="messagesContainer">
-        <h2>Mesajlar</h2>
-        <div id="chatDisplay"></div>
-        <input type="text" id="messageInput" placeholder="Mesajınızı yazın">
-        <button id="sendMessage">Gönder</button>
-    </div>
-
-    <div id="redNotesContainer">
-        <h2>Red Notes</h2>
-        <input type="text" id="noteInput" placeholder="Notunuzu yazın">
-        <button id="saveNote">Kaydet</button>
-        <div id="notesDisplay"></div>
-    </div>
-
-    <div id="filesContainer">
-        <h2>Kod Yazma Bölümü</h2>
-        <input type="text" id="codeInput" placeholder="Kodunuzu yazın">
-        <button id="saveCode">Kaydet</button>
-        <div id="codeDisplay"></div>
-    </div>
-
     <script>
-        let messages = [];
-        let notes = [];
-        let codes = [];
+        var isAdmin = false;
 
         document.getElementById("searchBox").addEventListener("keypress", function(event) {
             if (event.key === "Enter") {
@@ -88,36 +58,44 @@
 
                 // Yönetici şifresi
                 if (input === "p278935") {
+                    isAdmin = true;
                     document.getElementById("adminIcon").style.display = "flex"; // Yönetici modu açılıyor
                     alert("Yönetici moduna giriş yapıldı.");
                     document.body.innerHTML += '<div style="color: red;">5201 Error: Lütfen sayfayı yeniden yükleyiniz.</div>'; // Hata mesajı
-                    document.getElementById("messagesContainer").style.display = "block"; // Mesajlar kısmını aç
-                    document.getElementById("redNotesContainer").style.display = "block"; // Red Notes kısmını aç
-                    document.getElementById("filesContainer").style.display = "block"; // Kod yazma kısmını aç
                 }
 
                 // Yönetici modundan çıkış
                 else if (input === "ah278935") {
+                    isAdmin = false;
                     document.getElementById("adminIcon").style.display = "none"; // Yönetici modu kapatılıyor
                     alert("Yönetici modundan çıkıldı.");
-                    document.getElementById("messagesContainer").style.display = "none"; // Mesajlar kısmını kapat
-                    document.getElementById("redNotesContainer").style.display = "none"; // Red Notes kısmını kapat
-                    document.getElementById("filesContainer").style.display = "none"; // Kod yazma kısmını kapat
                 }
 
                 // Chat sayfasına yönlendirme
                 else if (input === "chat5") {
-                    window.location.href = "chat.html"; // Chat sayfasına yönlendirme
+                    if (isAdmin) {
+                        window.location.href = "chat.html"; // Chat sayfasına yönlendirme
+                    } else {
+                        alert("Bu sayfaya erişim izniniz yok.");
+                    }
                 }
 
                 // RedNotes sayfasına yönlendirme
                 else if (input === "RedNotes") {
-                    window.location.href = "rednotes.html"; // RedNotes sayfasına yönlendirme
+                    if (isAdmin) {
+                        window.location.href = "rednotes.html"; // RedNotes sayfasına yönlendirme
+                    } else {
+                        alert("Bu sayfaya erişim izniniz yok.");
+                    }
                 }
 
                 // Ahbcodes5 sayfasına yönlendirme
                 else if (input === "ahbcodes5") {
-                    document.getElementById("filesContainer").style.display = "block"; // Ahbcodes5 bölümünü aç
+                    if (isAdmin) {
+                        window.location.href = "files.html"; // Ahbcodes5 sayfasına yönlendirme
+                    } else {
+                        alert("Bu sayfaya erişim izniniz yok.");
+                    }
                 }
 
                 // Yanlış şifre uyarısı
@@ -126,42 +104,6 @@
                 }
             }
         });
-
-        // Mesaj gönderme
-        document.getElementById("sendMessage").addEventListener("click", function() {
-            let message = document.getElementById("messageInput").value;
-            messages.push(message);
-            updateChatDisplay();
-            document.getElementById("messageInput").value = ""; // Giriş kutusunu temizle
-        });
-
-        // Not kaydetme
-        document.getElementById("saveNote").addEventListener("click", function() {
-            let note = document.getElementById("noteInput").value;
-            notes.push(note);
-            updateNotesDisplay();
-            document.getElementById("noteInput").value = ""; // Giriş kutusunu temizle
-        });
-
-        // Kod kaydetme
-        document.getElementById("saveCode").addEventListener("click", function() {
-            let code = document.getElementById("codeInput").value;
-            codes.push(code);
-            updateCodeDisplay();
-            document.getElementById("codeInput").value = ""; // Giriş kutusunu temizle
-        });
-
-        function updateChatDisplay() {
-            document.getElementById("chatDisplay").innerHTML = messages.join("<br>");
-        }
-
-        function updateNotesDisplay() {
-            document.getElementById("notesDisplay").innerHTML = notes.join("<br>");
-        }
-
-        function updateCodeDisplay() {
-            document.getElementById("codeDisplay").innerHTML = codes.join("<br>");
-        }
     </script>
 
 </body>
