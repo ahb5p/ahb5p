@@ -58,23 +58,23 @@
 
                 // Yönetici şifresi
                 if (input === "p278935") {
-                    isAdmin = true;
-                    document.getElementById("adminIcon").style.display = "flex"; // Yönetici modu açılıyor
+                    isAdmin = true; // Yönetici modunu aç
+                    document.getElementById("adminIcon").style.display = "flex"; 
                     alert("Yönetici moduna giriş yapıldı.");
-                    document.body.innerHTML += '<div style="color: red;">5201 Error: Lütfen sayfayı yeniden yükleyiniz.</div>'; // Hata mesajı
+                    document.body.innerHTML += '<div style="color: red;">5201 Error: Lütfen sayfayı yeniden yükleyiniz.</div>'; 
                 }
 
                 // Yönetici modundan çıkış
                 else if (input === "ah278935") {
-                    isAdmin = false;
-                    document.getElementById("adminIcon").style.display = "none"; // Yönetici modu kapatılıyor
+                    isAdmin = false; 
+                    document.getElementById("adminIcon").style.display = "none"; 
                     alert("Yönetici modundan çıkıldı.");
                 }
 
                 // Chat sayfasına yönlendirme
                 else if (input === "chat5") {
                     if (isAdmin) {
-                        window.location.href = "chat.html"; // Chat sayfasına yönlendirme
+                        window.location.href = "chat.html"; 
                     } else {
                         alert("Bu sayfaya erişim izniniz yok.");
                     }
@@ -83,7 +83,7 @@
                 // RedNotes sayfasına yönlendirme
                 else if (input === "RedNotes") {
                     if (isAdmin) {
-                        window.location.href = "rednotes.html"; // RedNotes sayfasına yönlendirme
+                        window.location.href = "rednotes.html"; 
                     } else {
                         alert("Bu sayfaya erişim izniniz yok.");
                     }
@@ -92,7 +92,7 @@
                 // Ahbcodes5 sayfasına yönlendirme
                 else if (input === "ahbcodes5") {
                     if (isAdmin) {
-                        window.location.href = "files.html"; // Ahbcodes5 sayfasına yönlendirme
+                        window.location.href = "files.html"; 
                     } else {
                         alert("Bu sayfaya erişim izniniz yok.");
                     }
