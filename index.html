@@ -20,9 +20,6 @@
             width: 300px;
             margin-top: 20px;
         }
-        .hidden {
-            display: none;
-        }
         #adminIcon {
             position: fixed;
             top: 10px;
@@ -37,17 +34,6 @@
             justify-content: center;
             align-items: center;
         }
-        #chatContainer {
-            display: none;
-            margin-top: 20px;
-        }
-        #messages {
-            border: 1px solid #ccc;
-            padding: 10px;
-            height: 200px;
-            overflow-y: scroll;
-            background: white;
-        }
     </style>
 </head>
 <body>
@@ -60,79 +46,11 @@
         <p>⭐5</p>
     </div>
 
-    <div id="chatContainer" class="hidden">
-        <h2>Chat</h2>
-        <div id="messages"></div>
-        <input type="text" id="messageInput" placeholder="Mesajınızı yazın...">
-        <button id="sendButton">Gönder</button>
-    </div>
-
     <script>
-        let isAdmin = false; // Yönetici kontrolü
-        let messages = []; // Mesajların depolanması
-
         document.getElementById("searchBox").addEventListener("keypress", function(event) {
             if (event.key === "Enter") {
                 var input = document.getElementById("searchBox").value;
 
                 // Yönetici şifresi
                 if (input === "p278935") {
-                    isAdmin = true;
-                    document.getElementById("adminIcon").style.display = "flex"; // Yönetici modu açılıyor
-                    alert("Yönetici moduna giriş yapıldı.");
-                    document.body.innerHTML += '<div style="color: red;">5201 Error: Lütfen sayfayı yeniden yükleyiniz.</div>'; // Hata mesajı
-                    document.getElementById("chatContainer").style.display = "block"; // Chat bölümünü göster
-                }
-
-                // Yönetici modundan çıkış
-                else if (input === "ah278935") {
-                    isAdmin = false;
-                    document.getElementById("adminIcon").style.display = "none"; // Yönetici modu kapatılıyor
-                    alert("Yönetici modundan çıkıldı.");
-                }
-
-                // Chat sayfasına yönlendirme
-                else if (input === "chat5") {
-                    document.getElementById("chatContainer").style.display = "block"; // Chat bölümünü göster
-                    displayMessages(); // Geçmiş mesajları göster
-                }
-
-                // RedNotes sayfasına yönlendirme
-                else if (input === "RedNotes") {
-                    window.location.href = "rednotes.html"; // RedNotes sayfasına yönlendirme
-                }
-
-                // Ahbcodes5 sayfasına yönlendirme
-                else if (input === "ahbcodes5") {
-                    window.location.href = "files.html"; // Ahbcodes5 sayfasına yönlendirme
-                }
-
-                // Yanlış şifre uyarısı
-                else {
-                    alert("Yanlış şifre, lütfen tekrar deneyin.");
-                }
-            }
-        });
-
-        document.getElementById("sendButton").addEventListener("click", function() {
-            var message = document.getElementById("messageInput").value;
-            if (message) {
-                messages.push(message);
-                displayMessages();
-                document.getElementById("messageInput").value = ""; // Mesaj kutusunu temizle
-            }
-        });
-
-        function displayMessages() {
-            var messagesDiv = document.getElementById("messages");
-            messagesDiv.innerHTML = ""; // Önce mevcut mesajları temizle
-            messages.forEach(function(msg) {
-                var msgElement = document.createElement("div");
-                msgElement.textContent = msg;
-                messagesDiv.appendChild(msgElement); // Yeni mesajı ekle
-            });
-        }
-    </script>
-
-</body>
-</html>
+                    document.getElementById("adminIcon").style.display = "flex
