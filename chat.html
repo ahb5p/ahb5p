@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Chat Sayfası</title>
+</head>
+<body>
+    <h1>Chat Sayfası</h1>
+    <input type="text" id="nickname" placeholder="Takma adınızı girin">
+    <div id="chatWindow"></div>
+    <input type="text" id="message" placeholder="Mesajınızı yazın">
+    <button id="sendButton">Gönder</button>
+
+    <script>
+        let messages = [];
+        
+        document.getElementById("sendButton").addEventListener("click", function() {
+            let nickname = document.getElementById("nickname").value;
+            let message = document.getElementById("message").value;
+
+            if (nickname && message) {
+                messages.push(nickname + ": " + message);
+                document.getElementById("chatWindow").innerHTML += "<p>" + messages[messages.length - 1] + "</p>";
+                document.getElementById("message").value = ""; // Mesajı temizle
+            }
+        });
+    </script>
+</body>
+</html>
