@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Earth Life</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f0f0f0;
+            text-align: center;
+            padding: 50px;
+        }
+        h1 {
+            color: #333;
+        }
+        .download-link {
+            background-color: #4CAF50; /* Yeşil arka plan */
+            color: white; /* Beyaz metin */
+            padding: 15px 20px; /* İç boşluk */
+            text-decoration: none; /* Altı çizgi yok */
+            border-radius: 5px; /* Kenar yuvarlama */
+            transition: background-color 0.3s; /* Geçiş efekti */
+        }
+        .download-link:hover {
+            background-color: #45a049; /* Üzerine gelindiğinde arka plan rengi */
+        }
+    </style>
+</head>
+<body>
+    <h1>Earth Life</h1>
+    <p>Word dosyasını indirmek için aşağıdaki bağlantıya tıklayın:</p>
+    <a class="download-link" href="path/to/your/document.docx" download>Word Dosyasını İndir</a>
+</body>
+</html>
