@@ -7,68 +7,43 @@
     <style>
         body {
             font-family: Arial, sans-serif;
-            text-align: center;
-            background: url('galaxy-background.gif') no-repeat center center fixed; /* Burada galaksi arka planı ekleyin */
+            background-image: url('background.jpg'); /* Arka plan resmi */
             background-size: cover;
-            padding: 50px;
             color: white;
+            text-align: center;
+            padding: 20px;
         }
         h1 {
-            color: red; /* Another Life başlığının rengi kırmızı */
+            color: red;
         }
-        #searchBox {
+        #inputArea {
+            width: 80%;
+            height: 150px;
+            margin: 20px auto;
             padding: 10px;
             font-size: 18px;
-            width: 300px;
-            margin-top: 20px;
-        }
-        #notesContainer {
-            margin-top: 20px;
-        }
-        .note {
-            margin: 10px 0;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            background: rgba(255, 255, 255, 0.2);
-            padding: 10px;
-            border-radius: 5px;
         }
         #saveButton {
-            padding: 10px 20px;
             background-color: red;
             color: white;
             border: none;
+            padding: 10px 20px;
             cursor: pointer;
-            margin-top: 10px;
+            font-size: 16px;
+        }
+        #notesContainer {
+            
+            margin-top: 20px;
+            text-align: left;
+            max-width: 80%;
+            margin-left: auto;
+            margin-right: auto;
+        }
+        .note {
+            background-color: rgba(255, 255, 255, 0.1);
+            padding: 10px;
+            border-radius: 5px;
+            margin-bottom: 10px;
         }
         .editButton {
-            background: transparent;
-            border: none;
-            color: yellow;
-            cursor: pointer;
-        }
-        .hidden {
-            display: none;
-        }
-    </style>
-</head>
-<body>
-
-    <h1>Another Life</h1>
-    <input type="text" id="searchBox" placeholder="Şifreyi girin ve Enter'a basın">
-    <div id="content" class="hidden">
-        <textarea id="noteInput" placeholder="Buraya notunuzu yazın..." rows="5" style="width: 300px;"></textarea>
-        <button id="saveButton">Kaydet</button>
-        <div id="notesContainer"></div>
-    </div>
-
-    <script>
-        const correctPassword = "p278935";
-
-        document.getElementById("searchBox").addEventListener("keypress", function(event) {
-            if (event.key === "Enter") {
-                const input = document.getElementById("searchBox").value;
-
-                if (input === correctPassword) {
-                    docum
+  
