@@ -8,75 +8,68 @@
         body {
             font-family: Arial, sans-serif;
             text-align: center;
-            background: url('https://pin.it/7n2jDVcDc') no-repeat center center fixed; /* Burayı değiştirin */
+            background-image: url('your_galaxy_background_image_url'); /* Galaksi arka planı */
             background-size: cover;
-            padding: 50px;
-            color: white; /* Metin rengi beyaz yapıldı */
+            color: white;
         }
         h1 {
-            color: red; /* Another Life başlığı kırmızı */
+            color: red; /* Başlık rengi kırmızı */
         }
-        #inputArea {
-            margin-top: 20px;
-            background-color: rgba(255, 255, 255, 0.7);
-            border-radius: 5px;
+        #searchBox {
             padding: 10px;
+            font-size: 20px; /* Yazı boyutunu büyütüyoruz */
             width: 300px;
-            margin: 0 auto;
+            margin-top: 20px;
         }
-        #saveButton, #editButton {
-            margin-top: 10px;
-            background-color: red;
-            color: white;
-            border: none;
-            padding: 10px 20px;
+        #output {
+            margin-top: 20px;
+            text-align: left;
+        }
+        .entry {
+            margin: 5px 0;
+        }
+        .edit {
             cursor: pointer;
+            color: yellow; /* Kalem rengi */
+            margin-left: 10px;
         }
-        #editButton {
-            background-color: blue; /* Düzenle butonu mavi */
+        .hidden {
+            display: none;
         }
     </style>
 </head>
 <body>
 
     <h1>Another Life</h1>
-    <div id="inputArea">
-        <textarea id="textInput" placeholder="Buraya yazın..."></textarea>
-        <button id="saveButton">Kaydet</button>
-        <button id="editButton" style="display: none;">Düzenle</button>
-    </div>
+    <input type="text" id="searchBox" placeholder="Şifreyi girin ve Enter'a basın">
+    <div id="output" class="hidden"></div>
 
     <script>
-        const textInput = document.getElementById('textInput');
-        const saveButton = document.getElementById('saveButton');
-        const editButton = document.getElementById('editButton');
+        const correctPassword = "p278935";
+        const searchBox = document.getElementById("searchBox");
+        const outputDiv = document.getElementById("output");
+        let entries = [];
 
-        // Kaydetme fonksiyonu
-        saveButton.addEventListener('click', function() {
-            const text = textInput.value;
-            localStorage.setItem('savedText', text);
-            alert('Metin kaydedildi.');
-            editButton.style.display = 'inline-block'; // Düzenle butonunu göster
-            saveButton.style.display = 'none'; // Kaydet butonunu gizle
-        });
+        searchBox.addEventListener("keypress", function(event) {
+            if (event.key === "Enter") {
+                const input = searchBox.value;
 
-        // Düzenleme fonksiyonu
-        editButton.addEventListener('click', function() {
-            textInput.value = localStorage.getItem('savedText');
-            editButton.style.display = 'none';
-            saveButton.style.display = 'inline-block';
-        });
-
-        // Sayfa yüklendiğinde veriyi kontrol etme
-        window.onload = function() {
-            const savedText = localStorage.getItem('savedText');
-            if (savedText) {
-                textInput.value = savedText;
-                editButton.style.display = 'inline-block'; // Eğer kaydedilmiş metin varsa düzenle butonunu göster
-                saveButton.style.display = 'none'; // Kaydet butonunu gizle
+                if (input === correctPassword) {
+                    outputDiv.classList.remove("hidden");
+                    searchBox.placeholder = "Yazı girin...";
+                    searchBox.value = "";
+                    searchBox.removeEventListener("keypress", arguments.callee); // Kaldırıyoruz
+                    searchBox.addEventListener("keypress", addEntry); // Yeni bir dinleyici ekliyoruz
+                } else {
+                    alert("Yanlış şifre, lütfen tekrar deneyin.");
+                }
             }
-        };
-    </script>
+        });
 
-</body>
-</html>
+        function addEntry(event) {
+            if (event.key === "Enter") {
+                const text = searchBox.value;
+                if (text) {
+                    entries.push(text);
+                    displayEntries();
+                    searchBox.value = 
