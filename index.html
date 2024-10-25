@@ -8,96 +8,131 @@
         body {
             font-family: Arial, sans-serif;
             text-align: center;
-            background: url('https://pin.it/7n2jDVcDc') no-repeat center center fixed; /* Arka plan resmini buraya ekle */
-            background-size: cover;
+            background-color: #f0f0f0;
             padding: 50px;
-            color: white; /* Metin rengini beyaz yap */
         }
-        #passwordSection, #mainSection {
-            display: none;
-            background-color: rgba(0, 0, 0, 0.7); /* Arka plan için saydamlık */
-            padding: 20px;
-            border-radius: 10px;
-            margin: 20px auto;
-            width: 80%; /* Genişliği ayarla */
-            max-width: 600px; /* Maksimum genişliği ayarla */
+        #inputArea {
+            width: 100%;
+            height: 200px;
+            margin-bottom: 10px;
+            font-size: 16px;
         }
         #saveButton {
             background-color: red;
             color: white;
-            padding: 10px;
             border: none;
+            padding: 10px 20px;
             cursor: pointer;
+            font-size: 16px;
         }
-        #savedNotes {
+        #notes {
             margin-top: 20px;
             text-align: left;
         }
         .note {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
             margin-bottom: 10px;
+            padding: 5px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            background-color: #fff;
+        }
+        .editButton {
+            cursor: pointer;
+            color: blue;
+        }
+        #passwordPrompt {
+            display: none;
+            margin-bottom: 20px;
+        }
+        #mainContent {
+            display: none;
+        }
+        #anotherLife {
+            color: red;
+            font-size: 24px;
+            cursor: pointer;
         }
     </style>
 </head>
 <body>
 
-    <h1 style="color: red;">Another Life</h1>
-    <div id="passwordSection">
-        <input type="password" id="password" placeholder="Şifrenizi girin...">
-        <button id="submitPassword">Giriş</button>
-        <div id="error" style="color: red;"></div>
+    <h1 id="anotherLife">Another Life</h1>
+    
+    <div id="passwordPrompt">
+        <input type="password" id="passwordInput" placeholder="Şifreyi girin...">
+        <button id="submitPassword">Gönder</button>
     </div>
-
-    <div id="mainSection">
-        <h2>Yazınız:</h2>
-        <textarea id="textInput" rows="10" style="width: 100%;"></textarea>
+    
+    <div id="mainContent">
+        <textarea id="inputArea" placeholder="Buraya yazın..."></textarea><br>
         <button id="saveButton">Kaydet</button>
-        <div id="savedNotes"></div>
+        <div id="notes"></div>
     </div>
 
     <script>
-        // Şifre kontrolü
-        document.getElementById("passwordSection").style.display = "block";
+        const password = "p278935";
+        const anotherLife = document.getElementById("anotherLife");
+        const passwordPrompt = document.getElementById("passwordPrompt");
+        const mainContent = document.getElementById("mainContent");
+        const inputArea = document.getElementById("inputArea");
+        const saveButton = document.getElementById("saveButton");
+        const notesContainer = document.getElementById("notes");
+
+        anotherLife.addEventListener("click", function() {
+            passwordPrompt.style.display = "block";
+            anotherLife.style.display = "none";
+        });
+
         document.getElementById("submitPassword").addEventListener("click", function() {
-            const password = document.getElementById("password").value;
-            if (password === "p278935") {
-                document.getElementById("passwordSection").style.display = "none";
-                document.getElementById("mainSection").style.display = "block";
-                loadNotes(); // Kaydedilen notları yükle
+            const enteredPassword = passwordInput.value;
+            if (enteredPassword === password) {
+                passwordPrompt.style.display = "none";
+                mainContent.style.display = "block";
+                loadNotes();
             } else {
-                document.getElementById("error").textContent = "Geçersiz şifre! Lütfen tekrar deneyin.";
+                alert("Yanlış şifre, lütfen tekrar deneyin.");
             }
         });
 
-        // Notları kaydetme
-        document.getElementById("saveButton").addEventListener("click", function() {
-            const textInput = document.getElementById("textInput").value;
-            if (textInput) {
-                let notes = JSON.parse(localStorage.getItem("notes")) || [];
-                notes.push(textInput); // Sadece metni ekle
-                localStorage.setItem("notes", JSON.stringify(notes));
-                document.getElementById("textInput").value = ""; // Yazma alanını temizle
-                loadNotes(); // Notları yeniden yükle
+        saveButton.addEventListener("click", function() {
+            const noteText = inputArea.value;
+            if (noteText.trim() !== "") {
+                saveNote(noteText);
+                inputArea.value = "";
+                loadNotes();
             }
         });
 
-        // Notları yükleme
-        function loadNotes() {
-            const savedNotes = document.getElementById("savedNotes");
-            savedNotes.innerHTML = ""; // Önceki notları temizle
+        function saveNote(note) {
             const notes = JSON.parse(localStorage.getItem("notes")) || [];
+            notes.push(note);
+            localStorage.setItem("notes", JSON.stringify(notes));
+        }
+
+        function loadNotes() {
+            const notes = JSON.parse(localStorage.getItem("notes")) || [];
+            notesContainer.innerHTML = "";
             notes.forEach((note, index) => {
-                savedNotes.innerHTML += `<div class="note">${note} <button onclick="editNote(${index})">✏️ Düzenle</button></div>`;
+                const noteDiv = document.createElement("div");
+                noteDiv.classList.add("note");
+                noteDiv.innerHTML = `
+                    <span>${note}</span>
+                    <span class="editButton" onclick="editNote(${index})">✏️</span>
+                `;
+                notesContainer.appendChild(noteDiv);
             });
         }
 
-        // Not düzenleme
         function editNote(index) {
             const notes = JSON.parse(localStorage.getItem("notes"));
-            const noteToEdit = notes[index];
-            document.getElementById("textInput").value = noteToEdit; // Düzenlenmek üzere yazma alanına getir
-            notes.splice(index, 1); // Notu sil
-            localStorage.setItem("notes", JSON.stringify(notes)); // Güncel notları kaydet
-            loadNotes(); // Notları yeniden yükle
+            const note = notes[index];
+            inputArea.value = note;
+            notes.splice(index, 1); // notu sil
+            localStorage.setItem("notes", JSON.stringify(notes)); // güncellenmiş notları kaydet
+            loadNotes(); // notları yeniden yükle
         }
     </script>
 
