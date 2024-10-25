@@ -11,128 +11,102 @@
             background-color: #f0f0f0;
             padding: 50px;
         }
-        #inputArea {
-            width: 100%;
-            height: 200px;
-            margin-bottom: 10px;
-            font-size: 16px;
+        #mainContent {
+            display: none;
         }
-        #saveButton {
-            background-color: red;
-            color: white;
-            border: none;
-            padding: 10px 20px;
-            cursor: pointer;
-            font-size: 16px;
-        }
-        #notes {
+        #savedNotes {
             margin-top: 20px;
             text-align: left;
         }
         .note {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 10px;
-            padding: 5px;
             border: 1px solid #ccc;
-            border-radius: 5px;
+            padding: 10px;
+            margin: 5px 0;
             background-color: #fff;
         }
         .editButton {
             cursor: pointer;
             color: blue;
-        }
-        #passwordPrompt {
-            display: none;
-            margin-bottom: 20px;
-        }
-        #mainContent {
-            display: none;
-        }
-        #anotherLife {
-            color: red;
-            font-size: 24px;
-            cursor: pointer;
+            text-decoration: underline;
+            margin-left: 10px;
         }
     </style>
 </head>
 <body>
 
-    <h1 id="anotherLife">Another Life</h1>
-    
-    <div id="passwordPrompt">
-        <input type="password" id="passwordInput" placeholder="Şifreyi girin...">
-        <button id="submitPassword">Gönder</button>
-    </div>
-    
+    <h1 style="color: red;">Another Life</h1>
+    <input type="password" id="passwordInput" placeholder="Şifreyi girin...">
+    <button id="submitPassword">Gönder</button>
+
     <div id="mainContent">
-        <textarea id="inputArea" placeholder="Buraya yazın..."></textarea><br>
-        <button id="saveButton">Kaydet</button>
-        <div id="notes"></div>
+        <h2>Yazı Yazın:</h2>
+        <textarea id="noteInput" rows="5" style="width: 100%;"></textarea>
+        <button id="saveButton" style="color: red;">Kaydet</button>
+
+        <div id="savedNotes">
+            <h2>Kayıtlı Notlar:</h2>
+        </div>
     </div>
 
     <script>
-        const password = "p278935";
-        const anotherLife = document.getElementById("anotherLife");
-        const passwordPrompt = document.getElementById("passwordPrompt");
-        const mainContent = document.getElementById("mainContent");
-        const inputArea = document.getElementById("inputArea");
-        const saveButton = document.getElementById("saveButton");
-        const notesContainer = document.getElementById("notes");
-
-        anotherLife.addEventListener("click", function() {
-            passwordPrompt.style.display = "block";
-            anotherLife.style.display = "none";
-        });
+        const correctPassword = "p278935";
+        const savedNotesKey = "savedNotes";
 
         document.getElementById("submitPassword").addEventListener("click", function() {
-            const enteredPassword = passwordInput.value;
-            if (enteredPassword === password) {
-                passwordPrompt.style.display = "none";
-                mainContent.style.display = "block";
+            const passwordInput = document.getElementById("passwordInput").value;
+            if (passwordInput === correctPassword) {
+                document.getElementById("mainContent").style.display = "block";
                 loadNotes();
             } else {
-                alert("Yanlış şifre, lütfen tekrar deneyin.");
+                alert("Yanlış şifre!");
             }
         });
 
-        saveButton.addEventListener("click", function() {
-            const noteText = inputArea.value;
-            if (noteText.trim() !== "") {
-                saveNote(noteText);
-                inputArea.value = "";
-                loadNotes();
+        document.getElementById("saveButton").addEventListener("click", function() {
+            const noteInput = document.getElementById("noteInput").value;
+            if (noteInput) {
+                saveNote(noteInput);
+                document.getElementById("noteInput").value = ""; // Yazma alanını temizle
+            } else {
+                alert("Lütfen bir not yazın.");
             }
         });
 
         function saveNote(note) {
-            const notes = JSON.parse(localStorage.getItem("notes")) || [];
+            let notes = JSON.parse(localStorage.getItem(savedNotesKey)) || [];
             notes.push(note);
-            localStorage.setItem("notes", JSON.stringify(notes));
+            localStorage.setItem(savedNotesKey, JSON.stringify(notes));
+            loadNotes();
         }
 
         function loadNotes() {
-            const notes = JSON.parse(localStorage.getItem("notes")) || [];
-            notesContainer.innerHTML = "";
+            const notesContainer = document.getElementById("savedNotes");
+            notesContainer.innerHTML = "<h2>Kayıtlı Notlar:</h2>";
+            let notes = JSON.parse(localStorage.getItem(savedNotesKey)) || [];
+
             notes.forEach((note, index) => {
                 const noteDiv = document.createElement("div");
-                noteDiv.classList.add("note");
-                noteDiv.innerHTML = `
-                    <span>${note}</span>
-                    <span class="editButton" onclick="editNote(${index})">✏️</span>
-                `;
+                noteDiv.className = "note";
+                noteDiv.textContent = note;
+
+                const editButton = document.createElement("span");
+                editButton.className = "editButton";
+                editButton.textContent = "Düzenle";
+                editButton.onclick = () => editNote(index);
+                noteDiv.appendChild(editButton);
+
                 notesContainer.appendChild(noteDiv);
             });
         }
 
         function editNote(index) {
-            const notes = JSON.parse(localStorage.getItem("notes"));
-            const note = notes[index];
-            inputArea.value = note;
-            notes.splice(index, 1); // notu sil
-            localStorage.setItem("notes", JSON.stringify(notes)); // güncellenmiş notları kaydet
-            loadNotes(); // notları yeniden yükle
+            let notes = JSON.parse(localStorage.getItem(savedNotesKey)) || [];
+            const updatedNote = prompt("Notu düzenleyin:", notes[index]);
+            if (updatedNote !== null) {
+                notes[index] = updatedNote;
+                localStorage.setItem(savedNotesKey, JSON.stringify(notes));
+                loadNotes();
+            }
         }
     </script>
 
