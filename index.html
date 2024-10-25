@@ -8,11 +8,19 @@
         body {
             font-family: Arial, sans-serif;
             text-align: center;
-            background-color: #f0f0f0;
+            background: url('https://pin.it/7n2jDVcDc') no-repeat center center fixed; /* Arka plan resmini buraya ekle */
+            background-size: cover;
             padding: 50px;
+            color: white; /* Metin rengini beyaz yap */
         }
         #passwordSection, #mainSection {
             display: none;
+            background-color: rgba(0, 0, 0, 0.7); /* Arka plan için saydamlık */
+            padding: 20px;
+            border-radius: 10px;
+            margin: 20px auto;
+            width: 80%; /* Genişliği ayarla */
+            max-width: 600px; /* Maksimum genişliği ayarla */
         }
         #saveButton {
             background-color: red;
@@ -65,7 +73,7 @@
             const textInput = document.getElementById("textInput").value;
             if (textInput) {
                 let notes = JSON.parse(localStorage.getItem("notes")) || [];
-                notes.push({ text: textInput, date: new Date().toLocaleString() });
+                notes.push(textInput); // Sadece metni ekle
                 localStorage.setItem("notes", JSON.stringify(notes));
                 document.getElementById("textInput").value = ""; // Yazma alanını temizle
                 loadNotes(); // Notları yeniden yükle
@@ -78,7 +86,7 @@
             savedNotes.innerHTML = ""; // Önceki notları temizle
             const notes = JSON.parse(localStorage.getItem("notes")) || [];
             notes.forEach((note, index) => {
-                savedNotes.innerHTML += `<div class="note">${note.date}: ${note.text} <button onclick="editNote(${index})">✏️ Düzenle</button></div>`;
+                savedNotes.innerHTML += `<div class="note">${note} <button onclick="editNote(${index})">✏️ Düzenle</button></div>`;
             });
         }
 
@@ -86,7 +94,7 @@
         function editNote(index) {
             const notes = JSON.parse(localStorage.getItem("notes"));
             const noteToEdit = notes[index];
-            document.getElementById("textInput").value = noteToEdit.text; // Düzenlenmek üzere yazma alanına getir
+            document.getElementById("textInput").value = noteToEdit; // Düzenlenmek üzere yazma alanına getir
             notes.splice(index, 1); // Notu sil
             localStorage.setItem("notes", JSON.stringify(notes)); // Güncel notları kaydet
             loadNotes(); // Notları yeniden yükle
