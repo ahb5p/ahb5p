@@ -8,82 +8,74 @@
         body {
             font-family: Arial, sans-serif;
             text-align: center;
-            background-color: #f0f0f0;
+            background: url('https://pin.it/7n2jDVcDc') no-repeat center center fixed; /* Burayı değiştirin */
+            background-size: cover;
             padding: 50px;
+            color: white; /* Metin rengi beyaz yapıldı */
         }
         h1 {
-            color: #333;
-            cursor: pointer;
+            color: red; /* Another Life başlığı kırmızı */
         }
-        #searchBox, #mainContent {
-            display: none;
-        }
-        #searchBox {
+        #inputArea {
+            margin-top: 20px;
+            background-color: rgba(255, 255, 255, 0.7);
+            border-radius: 5px;
             padding: 10px;
-            font-size: 18px;
             width: 300px;
-            margin-top: 20px;
+            margin: 0 auto;
         }
-        #saveBtn {
-            margin-top: 20px;
-            padding: 10px;
+        #saveButton, #editButton {
+            margin-top: 10px;
             background-color: red;
             color: white;
             border: none;
+            padding: 10px 20px;
             cursor: pointer;
-            font-size: 16px;
-            display: none;
+        }
+        #editButton {
+            background-color: blue; /* Düzenle butonu mavi */
         }
     </style>
 </head>
 <body>
 
-    <h1 id="pageTitle">Another Life</h1>
-    
-    <!-- Şifre girişi -->
-    <input type="text" id="searchBox" placeholder="Şifreyi girin ve Enter'a basın">
-
-    <!-- Asıl Sayfa İçeriği -->
-    <div id="mainContent">
-        <textarea id="textInput" placeholder="Buraya yazı yazın..." style="width: 80%; height: 200px;"></textarea>
-        <br>
-        <button id="saveBtn">Save</button>
-        <p id="savedText" style="white-space: pre-wrap; text-align: left;"></p>
+    <h1>Another Life</h1>
+    <div id="inputArea">
+        <textarea id="textInput" placeholder="Buraya yazın..."></textarea>
+        <button id="saveButton">Kaydet</button>
+        <button id="editButton" style="display: none;">Düzenle</button>
     </div>
 
     <script>
-        // Başlık tıklanınca şifre kutusu görünsün
-        document.getElementById("pageTitle").addEventListener("click", function() {
-            document.getElementById("searchBox").style.display = "block";
+        const textInput = document.getElementById('textInput');
+        const saveButton = document.getElementById('saveButton');
+        const editButton = document.getElementById('editButton');
+
+        // Kaydetme fonksiyonu
+        saveButton.addEventListener('click', function() {
+            const text = textInput.value;
+            localStorage.setItem('savedText', text);
+            alert('Metin kaydedildi.');
+            editButton.style.display = 'inline-block'; // Düzenle butonunu göster
+            saveButton.style.display = 'none'; // Kaydet butonunu gizle
         });
 
-        // Şifre kontrolü
-        document.getElementById("searchBox").addEventListener("keypress", function(event) {
-            if (event.key === "Enter") {
-                var input = document.getElementById("searchBox").value;
-                if (input === "p278935") {
-                    document.getElementById("mainContent").style.display = "block"; // Asıl sayfa açılıyor
-                    document.getElementById("searchBox").style.display = "none"; // Şifre kutusu gizleniyor
-                    document.getElementById("saveBtn").style.display = "block"; // Kaydet butonu görünüyor
-                    
-                    // LocalStorage'dan kaydedilen veriyi getir
-                    var savedText = localStorage.getItem("savedContent");
-                    if (savedText) {
-                        document.getElementById("savedText").textContent = savedText;
-                    }
-                } else {
-                    alert("Yanlış şifre, lütfen tekrar deneyin.");
-                }
+        // Düzenleme fonksiyonu
+        editButton.addEventListener('click', function() {
+            textInput.value = localStorage.getItem('savedText');
+            editButton.style.display = 'none';
+            saveButton.style.display = 'inline-block';
+        });
+
+        // Sayfa yüklendiğinde veriyi kontrol etme
+        window.onload = function() {
+            const savedText = localStorage.getItem('savedText');
+            if (savedText) {
+                textInput.value = savedText;
+                editButton.style.display = 'inline-block'; // Eğer kaydedilmiş metin varsa düzenle butonunu göster
+                saveButton.style.display = 'none'; // Kaydet butonunu gizle
             }
-        });
-
-        // Save butonuna basılınca yazı kaydedilsin
-        document.getElementById("saveBtn").addEventListener("click", function() {
-            var text = document.getElementById("textInput").value;
-            localStorage.setItem("savedContent", text); // LocalStorage'a kaydet
-            document.getElementById("savedText").textContent = text; // Kaydedilen yazıyı göster
-            alert("Yazı kaydedildi.");
-        });
+        };
     </script>
 
 </body>
