@@ -8,68 +8,90 @@
         body {
             font-family: Arial, sans-serif;
             text-align: center;
-            background: url('https://media.giphy.com/media/gF58cZo6BqsGJq2mH8/giphy.gif') no-repeat center center fixed;
-            background-size: cover;
-            color: red;
+            background-color: #f0f0f0;
+            padding: 50px;
         }
-        #inputContainer, #savedEntries {
+        #passwordSection, #mainSection {
             display: none;
-            margin-top: 20px;
-        }
-        #inputArea {
-            width: 80%;
-            height: 200px;
-            margin-bottom: 10px;
         }
         #saveButton {
             background-color: red;
             color: white;
-            padding: 10px 15px;
+            padding: 10px;
             border: none;
             cursor: pointer;
-            font-size: 16px;
         }
-        .entry {
-            margin: 10px 0;
+        #savedNotes {
+            margin-top: 20px;
             text-align: left;
         }
-        .editButton {
-            cursor: pointer;
-            color: blue;
+        .note {
+            margin-bottom: 10px;
         }
     </style>
 </head>
 <body>
 
-    <h1>Another Life</h1>
-    <div>
-        <input type="text" id="passwordInput" placeholder="Şifreyi girin..." />
-        <button id="submitPassword">Gönder</button>
+    <h1 style="color: red;">Another Life</h1>
+    <div id="passwordSection">
+        <input type="password" id="password" placeholder="Şifrenizi girin...">
+        <button id="submitPassword">Giriş</button>
+        <div id="error" style="color: red;"></div>
     </div>
 
-    <div id="inputContainer">
-        <textarea id="inputArea" placeholder="Buraya yazın..."></textarea><br>
+    <div id="mainSection">
+        <h2>Yazınız:</h2>
+        <textarea id="textInput" rows="10" style="width: 100%;"></textarea>
         <button id="saveButton">Kaydet</button>
+        <div id="savedNotes"></div>
     </div>
-
-    <div id="savedEntries"></div>
 
     <script>
-        const password = "p278935";
-
+        // Şifre kontrolü
+        document.getElementById("passwordSection").style.display = "block";
         document.getElementById("submitPassword").addEventListener("click", function() {
-            const userInput = document.getElementById("passwordInput").value;
-            if (userInput === password) {
-                document.getElementById("inputContainer").style.display = "block";
-                document.getElementById("savedEntries").style.display = "block";
-                loadEntries();
+            const password = document.getElementById("password").value;
+            if (password === "p278935") {
+                document.getElementById("passwordSection").style.display = "none";
+                document.getElementById("mainSection").style.display = "block";
+                loadNotes(); // Kaydedilen notları yükle
             } else {
-                alert("Yanlış şifre!");
+                document.getElementById("error").textContent = "Geçersiz şifre! Lütfen tekrar deneyin.";
             }
         });
 
+        // Notları kaydetme
         document.getElementById("saveButton").addEventListener("click", function() {
-            const inputText = document.getElementById("inputArea").value;
-            if (inputText) {
-                const entries = JSON.parse(localStorage.getItem("entries")) || [];
-                entries.push
+            const textInput = document.getElementById("textInput").value;
+            if (textInput) {
+                let notes = JSON.parse(localStorage.getItem("notes")) || [];
+                notes.push({ text: textInput, date: new Date().toLocaleString() });
+                localStorage.setItem("notes", JSON.stringify(notes));
+                document.getElementById("textInput").value = ""; // Yazma alanını temizle
+                loadNotes(); // Notları yeniden yükle
+            }
+        });
+
+        // Notları yükleme
+        function loadNotes() {
+            const savedNotes = document.getElementById("savedNotes");
+            savedNotes.innerHTML = ""; // Önceki notları temizle
+            const notes = JSON.parse(localStorage.getItem("notes")) || [];
+            notes.forEach((note, index) => {
+                savedNotes.innerHTML += `<div class="note">${note.date}: ${note.text} <button onclick="editNote(${index})">✏️ Düzenle</button></div>`;
+            });
+        }
+
+        // Not düzenleme
+        function editNote(index) {
+            const notes = JSON.parse(localStorage.getItem("notes"));
+            const noteToEdit = notes[index];
+            document.getElementById("textInput").value = noteToEdit.text; // Düzenlenmek üzere yazma alanına getir
+            notes.splice(index, 1); // Notu sil
+            localStorage.setItem("notes", JSON.stringify(notes)); // Güncel notları kaydet
+            loadNotes(); // Notları yeniden yükle
+        }
+    </script>
+
+</body>
+</html>
