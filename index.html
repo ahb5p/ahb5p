@@ -8,98 +8,68 @@
         body {
             font-family: Arial, sans-serif;
             text-align: center;
-            background: url('https://pin.it/7n2jDVcDc') no-repeat center center fixed;
+            background: url('https://media.giphy.com/media/gF58cZo6BqsGJq2mH8/giphy.gif') no-repeat center center fixed;
             background-size: cover;
-            color: white;
-        }
-        h1 {
             color: red;
-            cursor: pointer;
         }
-        #mainContent {
+        #inputContainer, #savedEntries {
             display: none;
-            padding: 20px;
+            margin-top: 20px;
         }
-        #textArea {
-            width: 100%;
+        #inputArea {
+            width: 80%;
             height: 200px;
-            font-size: 18px;
+            margin-bottom: 10px;
         }
         #saveButton {
             background-color: red;
             color: white;
-            border: none;
             padding: 10px 15px;
+            border: none;
             cursor: pointer;
             font-size: 16px;
         }
         .entry {
-            margin: 15px 0;
+            margin: 10px 0;
             text-align: left;
         }
         .editButton {
             cursor: pointer;
-            color: yellow;
-            margin-left: 10px;
+            color: blue;
         }
     </style>
 </head>
 <body>
-    <h1 id="anotherLifeHeader">Another Life</h1>
 
-    <div id="passwordPrompt">
-        <input type="password" id="passwordInput" placeholder="Şifreyi girin">
-        <button id="submitPassword">Giriş</button>
+    <h1>Another Life</h1>
+    <div>
+        <input type="text" id="passwordInput" placeholder="Şifreyi girin..." />
+        <button id="submitPassword">Gönder</button>
     </div>
 
-    <div id="mainContent">
-        <textarea id="textArea" placeholder="Yazmak istediğinizi buraya yazın..."></textarea><br>
+    <div id="inputContainer">
+        <textarea id="inputArea" placeholder="Buraya yazın..."></textarea><br>
         <button id="saveButton">Kaydet</button>
-
-        <div id="savedEntries"></div>
     </div>
+
+    <div id="savedEntries"></div>
 
     <script>
-        const correctPassword = "p278935";
-        const header = document.getElementById("anotherLifeHeader");
-        const passwordPrompt = document.getElementById("passwordPrompt");
-        const mainContent = document.getElementById("mainContent");
-        const saveButton = document.getElementById("saveButton");
-        const textArea = document.getElementById("textArea");
-        const savedEntries = document.getElementById("savedEntries");
+        const password = "p278935";
 
-        header.onclick = function() {
-            passwordPrompt.style.display = "block";
-            header.style.display = "none";
-        };
-
-        document.getElementById("submitPassword").onclick = function() {
-            const password = passwordInput.value;
-            if (password === correctPassword) {
-                passwordPrompt.style.display = "none";
-                mainContent.style.display = "block";
+        document.getElementById("submitPassword").addEventListener("click", function() {
+            const userInput = document.getElementById("passwordInput").value;
+            if (userInput === password) {
+                document.getElementById("inputContainer").style.display = "block";
+                document.getElementById("savedEntries").style.display = "block";
+                loadEntries();
             } else {
-                alert("Yanlış şifre, lütfen tekrar deneyin.");
+                alert("Yanlış şifre!");
             }
-        };
+        });
 
-        saveButton.onclick = function() {
-            const entryText = textArea.value.trim();
-            if (entryText) {
-                const entryDiv = document.createElement("div");
-                entryDiv.classList.add("entry");
-                entryDiv.innerHTML = `${entryText} <span class="editButton" onclick="editEntry(this)">✏️</span>`;
-                savedEntries.appendChild(entryDiv);
-                textArea.value = "";
-            }
-        };
-
-        function editEntry(button) {
-            const entryDiv = button.parentElement;
-            const originalText = entryDiv.childNodes[0].nodeValue.trim();
-            textArea.value = originalText;
-            entryDiv.remove();  // Remove entry after editing
-        }
-    </script>
-</body>
-</html>
+        document.getElementById("saveButton").addEventListener("click", function() {
+            const inputText = document.getElementById("inputArea").value;
+            if (inputText) {
+                const entries = JSON.parse(localStorage.getItem("entries")) || [];
+                entries.push
